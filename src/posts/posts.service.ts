@@ -11,7 +11,7 @@ export class PostsService {
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   async create(createPostDto: CreatePostDto) {
     // Find the user who created the post
@@ -32,5 +32,12 @@ export class PostsService {
       relations: ['user'],
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async findOne(id: number) {
+    return await this.postRepository.createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .where('post.idPost = :id', { id })
+      .getOne();
   }
 }

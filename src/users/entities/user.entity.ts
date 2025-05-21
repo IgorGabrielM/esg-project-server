@@ -1,11 +1,14 @@
+import { Role } from 'src/roles/entities/role.entity';
 import { Post } from '../../posts/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { PostComment } from 'src/post-comments/entities/post-comment.entity';
 
 @Entity()
 export class User {
@@ -29,4 +32,13 @@ export class User {
 
   @OneToMany(() => Post, post => post.user)
   posts: Post[];
+
+
+  @OneToMany(() => PostComment, postComment => postComment.user)
+  comments: PostComment[];
+
+  @OneToMany(() => Role, role => role.users)
+  roles: Role;
 }
+
+
