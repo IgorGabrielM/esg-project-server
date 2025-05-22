@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { PostCommentsModule } from './post-comments/post-comments.module'; // Added import
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthGuard } from './auth/auth.guard';
     AuthModule,
     UsersModule,
     PostsModule,
+    PostCommentsModule, // Added PostCommentsModule
   ],
   controllers: [AppController],
   providers: [
