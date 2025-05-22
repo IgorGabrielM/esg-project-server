@@ -12,7 +12,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   app.enableCors({
-    origin: ['http://localhost:8100', 'https://fiap-esg-app.vercel.app', '*'],
+    origin: [
+      'http://localhost:8100',
+      'https://fiap-esg-app.vercel.app',
+      'http://localhost',
+      '*',
+    ],
   });
   await app.listen(process.env.PORT || 3000);
 }
