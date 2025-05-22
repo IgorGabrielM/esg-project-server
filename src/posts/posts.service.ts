@@ -28,16 +28,33 @@ export class PostsService {
   }
 
   async findAll() {
-    return await this.postRepository.find({
-      relations: ['user'],
-      order: { createdAt: 'DESC' },
-    });
+    try {
+      return await this.postRepository
+        .createQueryBuilder('post')
+        .leftJoinAndSelect('post.user', 'user')
+        .leftJoinAndSelect('post.likes', 'likes')
+        .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+        .leftJoinAndSelect('post.comments', 'post_comment')
+        .leftJoinAndSelect('post_comment.user', 'comment_user')
+        .getMany();
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findOne(id: number) {
-    return await this.postRepository.createQueryBuilder('post')
-      .leftJoinAndSelect('post.user', 'user')
-      .where('post.idPost = :id', { id })
-      .getOne();
+    try {
+      return await this.postRepository
+        .createQueryBuilder('post')
+        .where('post.idPost = :id', { id })
+        .leftJoinAndSelect('post.user', 'user')
+        .leftJoinAndSelect('post.likes', 'likes')
+        .loadRelationCountAndMap('post.commentsCount', 'post.comments')
+        .leftJoinAndSelect('post.comments', 'post_comment')
+        .leftJoinAndSelect('post_comment.user', 'comment_user')
+        .getOne();
+    } catch (error) {
+      throw error;
+    }
   }
 }

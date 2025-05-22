@@ -4,9 +4,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { PostComment } from 'src/post-comments/entities/post-comment.entity';
 
@@ -33,6 +34,13 @@ export class User {
   @OneToMany(() => Post, post => post.user)
   posts: Post[];
 
+  @ManyToMany((type) => Post, (post) => post.likes)
+  @JoinTable({
+    name: 'post_like',
+    joinColumn: { name: 'idUser', referencedColumnName: 'idUser' },
+    inverseJoinColumn: { name: 'idPost', referencedColumnName: 'idPost' },
+  })
+  likes: Post[];
 
   @OneToMany(() => PostComment, postComment => postComment.user)
   comments: PostComment[];
